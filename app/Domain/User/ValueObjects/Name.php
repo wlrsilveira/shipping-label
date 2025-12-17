@@ -23,21 +23,6 @@ final readonly class Name
         return $this->value;
     }
 
-    public function equals(Name $other): bool
-    {
-        return $this->value === $other->value;
-    }
-
-    public function toArray(): array
-    {
-        return ['name' => $this->value];
-    }
-
-    public static function fromArray(array $data): self
-    {
-        return new self($data['name']);
-    }
-
     public function __toString(): string
     {
         return $this->value;

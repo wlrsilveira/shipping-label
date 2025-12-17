@@ -13,10 +13,6 @@ interface ShippingProviderInterface
         Package $package
     ): array;
 
-    public function getLabelUrl(string $shipmentId): string;
-
-    public function validateAddress(Address $address): array;
-
     public function cancelShipment(string $shipmentId): bool;
 }
 

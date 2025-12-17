@@ -61,27 +61,6 @@ class EloquentUserRepository implements UserRepositoryInterface
         EloquentUser::destroy($user->getId());
     }
 
-    public function paginate(int $perPage = 10): array
-    {
-        $paginator = EloquentUser::latest()->paginate($perPage);
-
-        $domainUsers = $paginator->getCollection()->map(function ($eloquentUser) {
-            return $this->mapper->toDomain($eloquentUser);
-        })->toArray();
-
-        return [
-            'items' => $domainUsers,
-            'total' => $paginator->total(),
-            'current_page' => $paginator->currentPage(),
-            'per_page' => $paginator->perPage(),
-        ];
-    }
-
-    public function findEloquentById(int $id): ?EloquentUser
-    {
-        return EloquentUser::find($id);
-    }
-
     public function findAuthenticatableById(int $id): ?Authenticatable
     {
         return EloquentUser::find($id);

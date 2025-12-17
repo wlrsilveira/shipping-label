@@ -45,34 +45,4 @@ class NameTest extends TestCase
 
         new Name(str_repeat('a', 256));
     }
-
-    public function test_can_compare_equal_names(): void
-    {
-        $name1 = new Name('John Doe');
-        $name2 = new Name('John Doe');
-
-        $this->assertTrue($name1->equals($name2));
-    }
-
-    public function test_can_compare_different_names(): void
-    {
-        $name1 = new Name('John Doe');
-        $name2 = new Name('Jane Doe');
-
-        $this->assertFalse($name1->equals($name2));
-    }
-
-    public function test_can_convert_to_array(): void
-    {
-        $name = new Name('John Doe');
-
-        $this->assertEquals(['name' => 'John Doe'], $name->toArray());
-    }
-
-    public function test_can_create_from_array(): void
-    {
-        $name = Name::fromArray(['name' => 'John Doe']);
-
-        $this->assertEquals('John Doe', $name->getValue());
-    }
 }

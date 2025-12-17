@@ -19,21 +19,6 @@ final readonly class Email
         return $this->value;
     }
 
-    public function equals(Email $other): bool
-    {
-        return $this->value === $other->value;
-    }
-
-    public function toArray(): array
-    {
-        return ['email' => $this->value];
-    }
-
-    public static function fromArray(array $data): self
-    {
-        return new self($data['email']);
-    }
-
     public function __toString(): string
     {
         return $this->value;

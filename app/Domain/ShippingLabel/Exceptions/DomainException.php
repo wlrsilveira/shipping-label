@@ -28,3 +28,4 @@ abstract class DomainException extends BaseDomainException
     }
 }
 
+

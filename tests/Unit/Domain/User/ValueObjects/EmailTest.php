@@ -29,34 +29,4 @@ class EmailTest extends TestCase
 
         new Email('invalid-email');
     }
-
-    public function test_can_compare_equal_emails(): void
-    {
-        $email1 = new Email('test@example.com');
-        $email2 = new Email('test@example.com');
-
-        $this->assertTrue($email1->equals($email2));
-    }
-
-    public function test_can_compare_different_emails(): void
-    {
-        $email1 = new Email('test1@example.com');
-        $email2 = new Email('test2@example.com');
-
-        $this->assertFalse($email1->equals($email2));
-    }
-
-    public function test_can_convert_to_array(): void
-    {
-        $email = new Email('test@example.com');
-
-        $this->assertEquals(['email' => 'test@example.com'], $email->toArray());
-    }
-
-    public function test_can_create_from_array(): void
-    {
-        $email = Email::fromArray(['email' => 'test@example.com']);
-
-        $this->assertEquals('test@example.com', $email->getValue());
-    }
 }

@@ -88,67 +88,6 @@ class EasyPostService implements ShippingProviderInterface
         }
     }
 
-    public function getLabelUrl(string $shipmentId): string
-    {
-        try {
-            $shipment = $this->client->shipment->retrieve($shipmentId);
-
-            if (!$shipment->postage_label || !$shipment->postage_label->label_url) {
-                throw EasyPostApiException::labelRetrievalFailed($shipmentId, 'Label not found');
-            }
-
-            return $shipment->postage_label->label_url;
-        } catch (ApiException $e) {
-            throw EasyPostApiException::apiError($e->getMessage(), $e);
-        } catch (\Exception $e) {
-            throw EasyPostApiException::labelRetrievalFailed($shipmentId, $e->getMessage());
-        }
-    }
-
-    public function validateAddress(Address $address): array
-    {
-        $addressData = $this->mapAddressToEasyPost($address);
-        $payload = array_merge($addressData, ['verify' => true]);
-
-        try {
-            $verified = $this->client->address->create($payload);
-
-            if (!$verified) {
-                throw EasyPostApiException::addressValidationFailed('Address verification failed');
-            }
-
-            $verificationErrors = $verified->verifications->delivery->errors ?? [];
-            $isValid = empty($verificationErrors);
-
-            return [
-                'is_valid' => $isValid,
-                'verified_address' => [
-                    'street1' => $verified->street1 ?? $address->getStreet1(),
-                    'street2' => $verified->street2 ?? $address->getStreet2(),
-                    'city' => $verified->city ?? $address->getCity(),
-                    'state' => $verified->state ?? $address->getState()->value,
-                    'zip' => $verified->zip ?? $address->getZipCode(),
-                    'country' => $verified->country ?? $address->getCountry()->value,
-                ],
-                'messages' => $verificationErrors,
-            ];
-        } catch (ApiException $e) {
-            $errorMessage = $e->getMessage();
-
-            if (str_contains($errorMessage, 'verification') || str_contains($errorMessage, 'address')) {
-                return [
-                    'is_valid' => false,
-                    'verified_address' => null,
-                    'messages' => [$errorMessage],
-                ];
-            }
-
-            throw EasyPostApiException::addressValidationFailed($errorMessage);
-        } catch (\Exception $e) {
-            throw EasyPostApiException::addressValidationFailed($e->getMessage());
-        }
-    }
-
     private function mapAddressToEasyPost(Address $address): array
     {
         return [

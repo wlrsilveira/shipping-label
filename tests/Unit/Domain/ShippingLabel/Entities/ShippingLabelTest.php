@@ -77,7 +77,6 @@ class ShippingLabelTest extends TestCase
         $this->assertEquals('First', $label->getService());
         $this->assertEquals(10.50, $label->getRate());
         $this->assertEquals(ShippingLabelStatus::CREATED, $label->getStatus());
-        $this->assertTrue($label->isCreated());
     }
 
     public function test_can_mark_as_failed(): void
@@ -92,7 +91,6 @@ class ShippingLabelTest extends TestCase
         $label->markAsFailed();
 
         $this->assertEquals(ShippingLabelStatus::FAILED, $label->getStatus());
-        $this->assertTrue($label->isFailed());
     }
 
     public function test_can_cancel_label(): void
@@ -107,7 +105,6 @@ class ShippingLabelTest extends TestCase
         $label->cancel();
 
         $this->assertEquals(ShippingLabelStatus::CANCELLED, $label->getStatus());
-        $this->assertTrue($label->isCancelled());
     }
 
     public function test_can_check_if_is_pending(): void
@@ -120,45 +117,6 @@ class ShippingLabelTest extends TestCase
         );
 
         $this->assertTrue($label->isPending());
-    }
-
-    public function test_can_check_if_has_label(): void
-    {
-        $label = ShippingLabel::create(
-            userId: 1,
-            fromAddress: $this->createAddress(),
-            toAddress: $this->createAddress(),
-            package: $this->createPackage()
-        );
-
-        $this->assertFalse($label->hasLabel());
-
-        $label->markAsCreated(
-            externalShipmentId: 'ext_123',
-            provider: 'EasyPost',
-            labelUrl: 'https://example.com/label.pdf',
-            trackingCode: 'TRACK123',
-            carrier: 'USPS',
-            service: 'First',
-            rate: 10.50
-        );
-
-        $this->assertTrue($label->hasLabel());
-    }
-
-    public function test_can_check_if_can_be_cancelled(): void
-    {
-        $label = ShippingLabel::create(
-            userId: 1,
-            fromAddress: $this->createAddress(),
-            toAddress: $this->createAddress(),
-            package: $this->createPackage()
-        );
-
-        $this->assertTrue($label->canBeCancelled());
-
-        $label->markAsFailed();
-        $this->assertFalse($label->canBeCancelled());
     }
 
     public function test_can_check_ownership(): void
@@ -202,76 +160,6 @@ class ShippingLabelTest extends TestCase
         $label->ensureOwnedBy(1);
 
         $this->assertTrue(true);
-    }
-
-    public function test_can_update_from_address(): void
-    {
-        $label = ShippingLabel::create(
-            userId: 1,
-            fromAddress: $this->createAddress(),
-            toAddress: $this->createAddress(),
-            package: $this->createPackage()
-        );
-
-        $newAddress = new Address(
-            street1: '456 Oak Ave',
-            street2: null,
-            city: 'San Francisco',
-            state: USState::CALIFORNIA,
-            zipCode: '94102',
-            country: Country::UNITED_STATES
-        );
-
-        $label->updateFromAddress($newAddress);
-
-        $this->assertEquals('456 Oak Ave', $label->getFromAddress()->getStreet1());
-        $this->assertEquals('San Francisco', $label->getFromAddress()->getCity());
-    }
-
-    public function test_can_update_to_address(): void
-    {
-        $label = ShippingLabel::create(
-            userId: 1,
-            fromAddress: $this->createAddress(),
-            toAddress: $this->createAddress(),
-            package: $this->createPackage()
-        );
-
-        $newAddress = new Address(
-            street1: '789 Pine St',
-            street2: null,
-            city: 'New York',
-            state: USState::NEW_YORK,
-            zipCode: '10001',
-            country: Country::UNITED_STATES
-        );
-
-        $label->updateToAddress($newAddress);
-
-        $this->assertEquals('789 Pine St', $label->getToAddress()->getStreet1());
-        $this->assertEquals('New York', $label->getToAddress()->getCity());
-    }
-
-    public function test_can_update_package(): void
-    {
-        $label = ShippingLabel::create(
-            userId: 1,
-            fromAddress: $this->createAddress(),
-            toAddress: $this->createAddress(),
-            package: $this->createPackage()
-        );
-
-        $newPackage = new Package(
-            weight: 20.0,
-            length: 15.0,
-            width: 10.0,
-            height: 8.0
-        );
-
-        $label->updatePackage($newPackage);
-
-        $this->assertEquals(20.0, $label->getPackage()->getWeight());
-        $this->assertEquals(15.0, $label->getPackage()->getLength());
     }
 
     public function test_can_get_status_as_string(): void

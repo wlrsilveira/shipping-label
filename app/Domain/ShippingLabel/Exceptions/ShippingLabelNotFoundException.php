@@ -18,3 +18,4 @@ class ShippingLabelNotFoundException extends DomainException
     }
 }
 
+

@@ -43,3 +43,4 @@ class ShippingLabelProcessed implements ShouldBroadcast
     }
 }
 
+

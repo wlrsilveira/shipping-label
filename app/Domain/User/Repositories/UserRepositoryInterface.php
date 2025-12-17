@@ -14,7 +14,5 @@ interface UserRepositoryInterface
     public function save(User $user): User;
 
     public function delete(User $user): void;
-
-    public function paginate(int $perPage = 10): array;
 }
 

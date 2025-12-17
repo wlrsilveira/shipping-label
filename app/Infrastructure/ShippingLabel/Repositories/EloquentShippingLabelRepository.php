@@ -31,24 +31,6 @@ class EloquentShippingLabelRepository implements ShippingLabelRepositoryInterfac
         return $eloquentLabel ? $this->mapper->toDomain($eloquentLabel) : null;
     }
 
-    public function findByTrackingCode(string $trackingCode): ?ShippingLabel
-    {
-        $eloquentLabel = EloquentShippingLabel::where('tracking_code', $trackingCode)->first();
-
-        return $eloquentLabel ? $this->mapper->toDomain($eloquentLabel) : null;
-    }
-
-    public function findByUserId(int $userId): array
-    {
-        $eloquentLabels = EloquentShippingLabel::where('user_id', $userId)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return $eloquentLabels->map(function ($eloquentLabel) {
-            return $this->mapper->toDomain($eloquentLabel);
-        })->toArray();
-    }
-
     public function save(ShippingLabel $label): ShippingLabel
     {
         $eloquentLabel = $this->mapper->toEloquent($label);
@@ -91,17 +73,6 @@ class EloquentShippingLabelRepository implements ShippingLabelRepositoryInterfac
             'per_page' => $paginator->perPage(),
             'last_page' => $paginator->lastPage(),
         ];
-    }
-
-    public function existsByExternalShipmentId(string $shipmentId, ?string $provider = null): bool
-    {
-        $query = EloquentShippingLabel::where('external_shipment_id', $shipmentId);
-
-        if ($provider !== null) {
-            $query->where('provider', $provider);
-        }
-
-        return $query->exists();
     }
 
     public function getStatsByStatus(int $userId): array

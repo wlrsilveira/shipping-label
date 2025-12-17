@@ -10,17 +10,11 @@ interface ShippingLabelRepositoryInterface
 
     public function findByIdAndUserId(int $id, int $userId): ?ShippingLabel;
 
-    public function findByTrackingCode(string $trackingCode): ?ShippingLabel;
-
-    public function findByUserId(int $userId): array;
-
     public function save(ShippingLabel $label): ShippingLabel;
 
     public function delete(ShippingLabel $label): void;
 
     public function paginate(int $perPage = 15, ?int $userId = null, ?string $status = null): array;
-
-    public function existsByExternalShipmentId(string $shipmentId, ?string $provider = null): bool;
 
     public function getStatsByStatus(int $userId): array;
 }

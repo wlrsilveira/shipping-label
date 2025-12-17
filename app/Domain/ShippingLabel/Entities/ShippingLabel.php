@@ -158,46 +158,6 @@ class ShippingLabel
         return $this->status->isPending();
     }
 
-    public function isCreated(): bool
-    {
-        return $this->status->isCreated();
-    }
-
-    public function isFailed(): bool
-    {
-        return $this->status->isFailed();
-    }
-
-    public function isCancelled(): bool
-    {
-        return $this->status->isCancelled();
-    }
-
-    public function hasLabel(): bool
-    {
-        return $this->status->hasLabel() && $this->labelUrl !== null && $this->trackingCode !== null;
-    }
-
-    public function canBeCancelled(): bool
-    {
-        return $this->status->canBeCancelled();
-    }
-
-    public function updateFromAddress(Address $address): void
-    {
-        $this->fromAddress = $address;
-    }
-
-    public function updateToAddress(Address $address): void
-    {
-        $this->toAddress = $address;
-    }
-
-    public function updatePackage(Package $package): void
-    {
-        $this->package = $package;
-    }
-
     public static function create(
         int $userId,
         Address $fromAddress,
