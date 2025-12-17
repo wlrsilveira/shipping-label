@@ -36,7 +36,7 @@ class ProcessShippingLabelJob implements ShouldQueue
             return;
         }
 
-        app(Pipeline::class)
+        $updatedLabel = app(Pipeline::class)
             ->send($label)
             ->through([
                 new CreateShipmentPipe(
@@ -46,7 +46,7 @@ class ProcessShippingLabelJob implements ShouldQueue
             ])
             ->thenReturn();
 
-        $this->broadcastUpdate();
+        $this->broadcastUpdate($updatedLabel->getId());
     }
 
     public function failed(?\Throwable $exception): void
@@ -57,13 +57,13 @@ class ProcessShippingLabelJob implements ShouldQueue
         if ($label && $label->isPending()) {
             $label->markAsFailed();
             $repository->save($label);
-            $this->broadcastUpdate();
+            $this->broadcastUpdate($this->shippingLabelId);
         }
     }
 
-    private function broadcastUpdate(): void
+    private function broadcastUpdate(int $labelId): void
     {
-        $eloquentLabel = EloquentShippingLabel::find($this->shippingLabelId);
+        $eloquentLabel = EloquentShippingLabel::find($labelId);
 
         if ($eloquentLabel) {
             event(new ShippingLabelProcessed($eloquentLabel));

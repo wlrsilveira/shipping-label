@@ -12,11 +12,18 @@ class DashboardController extends Controller
     public function index()
     {
         $usersCount = User::count();
+        $userId = auth()->id();
+
+        $countsByStatus = ShippingLabel::where('user_id', $userId)
+            ->selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
 
         $shippingLabelStats = [];
         foreach (ShippingLabelStatus::cases() as $status) {
             $shippingLabelStats[$status->value] = [
-                'count' => ShippingLabel::where('status', $status->value)->count(),
+                'count' => $countsByStatus[$status->value] ?? 0,
                 'label' => $status->getLabel(),
             ];
         }
