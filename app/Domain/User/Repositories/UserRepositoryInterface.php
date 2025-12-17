@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Domain\User\Repositories;
+
+use App\Domain\User\Entities\User;
+use App\Domain\User\ValueObjects\Email;
+
+interface UserRepositoryInterface
+{
+    public function findById(int $id): ?User;
+
+    public function findByEmail(Email $email): ?User;
+
+    public function save(User $user): User;
+
+    public function delete(User $user): void;
+
+    public function paginate(int $perPage = 10): array;
+}
+
