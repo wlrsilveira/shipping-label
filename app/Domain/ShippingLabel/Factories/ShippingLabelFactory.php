@@ -15,7 +15,8 @@ class ShippingLabelFactory
         Address $toAddress,
         Package $package,
         ?int $id = null,
-        ?string $easypostShipmentId = null,
+        ?string $externalShipmentId = null,
+        ?string $provider = null,
         ?string $labelUrl = null,
         ?string $trackingCode = null,
         ShippingLabelStatus $status = ShippingLabelStatus::PENDING,
@@ -31,7 +32,8 @@ class ShippingLabelFactory
             fromAddress: $fromAddress,
             toAddress: $toAddress,
             package: $package,
-            easypostShipmentId: $easypostShipmentId,
+            externalShipmentId: $externalShipmentId,
+            provider: $provider,
             labelUrl: $labelUrl,
             trackingCode: $trackingCode,
             status: $status,
@@ -72,7 +74,8 @@ class ShippingLabelFactory
             toAddress: AddressFactory::makeResidential(),
             package: PackageFactory::makeDefault(),
             id: 1,
-            easypostShipmentId: 'shp_' . bin2hex(random_bytes(12)),
+            externalShipmentId: 'shp_' . bin2hex(random_bytes(12)),
+            provider: 'easypost',
             labelUrl: 'https://easypost-files.s3-us-west-2.amazonaws.com/files/postage_label/12345/label.png',
             trackingCode: '9400111111111111111111',
             status: ShippingLabelStatus::CREATED,
@@ -97,7 +100,7 @@ class ShippingLabelFactory
     {
         $label = self::makeCreated($userId);
         $label->cancel();
-        
+
         return $label;
     }
 
