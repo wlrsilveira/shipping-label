@@ -5,10 +5,13 @@ namespace App\Infrastructure\ShippingLabel\Services;
 use App\Domain\ShippingLabel\ValueObjects\Address;
 use App\Domain\ShippingLabel\ValueObjects\Package;
 use App\Domain\ShippingLabel\Exceptions\EasyPostApiException;
+use App\Domain\ShippingLabel\Providers\ShippingProviderInterface;
+use App\Http\Middleware\LogHttpRequestsMiddleware;
 use EasyPost\EasyPostClient;
 use EasyPost\Exception\Api\ApiException;
+use GuzzleHttp\HandlerStack;
 
-class EasyPostService
+class EasyPostService implements ShippingProviderInterface
 {
     private EasyPostClient $client;
 
@@ -21,6 +24,16 @@ class EasyPostService
         }
 
         $this->client = new EasyPostClient($apiKey);
+
+        $stack = HandlerStack::create();
+        $stack->push(new LogHttpRequestsMiddleware());
+
+        $httpClient = new \GuzzleHttp\Client(['handler' => $stack]);
+
+        $reflection = new \ReflectionClass($this->client);
+        $property = $reflection->getProperty('httpClient');
+        $property->setAccessible(true);
+        $property->setValue($this->client, $httpClient);
     }
 
     public function createShipment(
@@ -28,16 +41,18 @@ class EasyPostService
         Address $toAddress,
         Package $package
     ): array {
-        try {
-            $from = $this->mapAddressToEasyPost($fromAddress);
-            $to = $this->mapAddressToEasyPost($toAddress);
-            $parcel = $this->mapPackageToEasyPost($package);
+        $from = $this->mapAddressToEasyPost($fromAddress);
+        $to = $this->mapAddressToEasyPost($toAddress);
+        $parcel = $this->mapPackageToEasyPost($package);
 
-            $shipment = $this->client->shipment->create([
-                'from_address' => $from,
-                'to_address' => $to,
-                'parcel' => $parcel,
-            ]);
+        $createPayload = [
+            'from_address' => $from,
+            'to_address' => $to,
+            'parcel' => $parcel,
+        ];
+
+        try {
+            $shipment = $this->client->shipment->create($createPayload);
 
             if (!$shipment || !$shipment->id) {
                 throw EasyPostApiException::shipmentCreationFailed('No shipment ID returned');
@@ -49,7 +64,9 @@ class EasyPostService
                 throw EasyPostApiException::shipmentCreationFailed('No rates available');
             }
 
-            $shipment = $this->client->shipment->buy($shipment->id, ['rate' => ['id' => $selectedRate->id]]);
+            $buyPayload = ['rate' => ['id' => $selectedRate->id]];
+
+            $shipment = $this->client->shipment->buy($shipment->id, $buyPayload);
 
             if (!$shipment->postage_label || !$shipment->postage_label->label_url) {
                 throw EasyPostApiException::labelRetrievalFailed($shipment->id, 'Label URL not available');
@@ -90,12 +107,11 @@ class EasyPostService
 
     public function validateAddress(Address $address): array
     {
+        $addressData = $this->mapAddressToEasyPost($address);
+        $payload = array_merge($addressData, ['verify' => true]);
+
         try {
-            $addressData = $this->mapAddressToEasyPost($address);
-            $verified = $this->client->address->create([
-                ...$addressData,
-                'verify' => true,
-            ]);
+            $verified = $this->client->address->create($payload);
 
             if (!$verified) {
                 throw EasyPostApiException::addressValidationFailed('Address verification failed');
@@ -158,6 +174,19 @@ class EasyPostService
         ];
     }
 
+    public function cancelShipment(string $shipmentId): bool
+    {
+        try {
+            $refund = $this->client->refund->create(['shipment' => $shipmentId]);
+
+            return $refund && $refund->status === 'submitted';
+        } catch (ApiException $e) {
+            throw EasyPostApiException::apiError($e->getMessage(), $e);
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     private function selectBestRate(mixed $shipment): ?object
     {
         if (empty($shipment->rates)) {
@@ -172,5 +201,6 @@ class EasyPostService
 
         return $rates[0] ?? null;
     }
+
 }
 

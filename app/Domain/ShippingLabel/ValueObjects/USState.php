@@ -64,8 +64,8 @@ enum USState: string
     public static function fromString(string $code): self
     {
         $normalized = strtoupper(trim($code));
-        
-        return self::tryFrom($normalized) 
+
+        return self::tryFrom($normalized)
             ?? throw new \InvalidArgumentException("Invalid US state code: {$code}");
     }
 

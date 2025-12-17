@@ -12,8 +12,8 @@ enum WeightUnit: string
     public static function fromString(string $unit): self
     {
         $normalized = strtolower(trim($unit));
-        
-        return self::tryFrom($normalized) 
+
+        return self::tryFrom($normalized)
             ?? throw new \InvalidArgumentException("Invalid weight unit: {$unit}. Allowed units: lb, oz, kg, g");
     }
 

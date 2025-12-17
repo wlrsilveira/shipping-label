@@ -38,5 +38,15 @@ enum ShippingLabelStatus: string
     {
         return $this === self::CREATED;
     }
+
+    public function getLabel(): string
+    {
+        return match($this) {
+            self::PENDING => 'Pending',
+            self::CREATED => 'Created',
+            self::FAILED => 'Failed',
+            self::CANCELLED => 'Cancelled',
+        };
+    }
 }
 

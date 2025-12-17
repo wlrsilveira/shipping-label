@@ -66,12 +66,16 @@ class EloquentShippingLabelRepository implements ShippingLabelRepositoryInterfac
         EloquentShippingLabel::destroy($label->getId());
     }
 
-    public function paginate(int $perPage = 15, ?int $userId = null): array
+    public function paginate(int $perPage = 15, ?int $userId = null, ?string $status = null): array
     {
         $query = EloquentShippingLabel::query();
 
         if ($userId !== null) {
             $query->where('user_id', $userId);
+        }
+
+        if ($status !== null) {
+            $query->where('status', $status);
         }
 
         $paginator = $query->orderBy('created_at', 'desc')->paginate($perPage);

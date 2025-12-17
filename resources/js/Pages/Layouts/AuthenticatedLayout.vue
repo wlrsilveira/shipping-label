@@ -32,6 +32,18 @@
                                 <UserGroupIcon class="h-5 w-5 mr-2" />
                                 Users
                             </Link>
+                            <Link
+                                :href="route('shipping-labels.index')"
+                                :class="[
+                                    $page.url.startsWith('/shipping-labels')
+                                        ? 'bg-turno-bg-light text-turno-primary border-turno-primary border-b-2'
+                                        : 'text-turno-primary border-transparent border-b-2',
+                                    'inline-flex items-center px-4 py-2 text-sm font-medium transition-colors rounded-t-lg'
+                                ]"
+                            >
+                                <TruckIcon class="h-5 w-5 mr-2" />
+                                Shipping Labels
+                            </Link>
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
@@ -90,6 +102,21 @@
                             Users
                         </div>
                     </Link>
+                    <Link
+                        :href="route('shipping-labels.index')"
+                        @click="mobileMenuOpen = false"
+                        :class="[
+                            $page.url.startsWith('/shipping-labels')
+                                ? 'bg-turno-bg-light text-turno-primary'
+                                : 'text-turno-primary hover:bg-gray-50',
+                            'block px-3 py-2 rounded-md text-base font-medium'
+                        ]"
+                    >
+                        <div class="flex items-center">
+                            <TruckIcon class="h-5 w-5 mr-2" />
+                            Shipping Labels
+                        </div>
+                    </Link>
                     <div class="border-t border-gray-200 pt-4 pb-3">
                         <div class="flex items-center px-3 mb-3">
                             <div class="h-10 w-10 rounded-full flex items-center justify-center text-white text-sm font-semibold bg-turno-gradient">
@@ -125,7 +152,14 @@
 import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { HomeIcon, UserGroupIcon, ArrowRightOnRectangleIcon, Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
+import {
+    HomeIcon,
+    UserGroupIcon,
+    ArrowRightOnRectangleIcon,
+    Bars3Icon,
+    XMarkIcon,
+    TruckIcon
+} from '@heroicons/vue/24/outline';
 
 defineProps({
     auth: Object,

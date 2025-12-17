@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ShippingLabelController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -19,7 +21,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('users', UserController::class)->except(['show']);
 
+    Route::resource('shipping-labels', ShippingLabelController::class)->except(['update', 'edit']);
+    Route::get('/us-states', [ShippingLabelController::class, 'usStates'])->name('us-states.index');
+
     Route::get('/', function () {
         return redirect()->route('dashboard');
     });
+
+    Broadcast::routes(['middleware' => ['web', 'auth']]);
 });

@@ -18,7 +18,7 @@ interface ShippingLabelRepositoryInterface
 
     public function delete(ShippingLabel $label): void;
 
-    public function paginate(int $perPage = 15, ?int $userId = null): array;
+    public function paginate(int $perPage = 15, ?int $userId = null, ?string $status = null): array;
 
     public function existsByExternalShipmentId(string $shipmentId, ?string $provider = null): bool;
 }

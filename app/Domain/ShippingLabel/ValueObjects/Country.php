@@ -9,8 +9,8 @@ enum Country: string
     public static function fromString(string $code): self
     {
         $normalized = strtoupper(trim($code));
-        
-        return self::tryFrom($normalized) 
+
+        return self::tryFrom($normalized)
             ?? throw new \InvalidArgumentException("Only United States addresses are allowed. Provided: {$code}");
     }
 

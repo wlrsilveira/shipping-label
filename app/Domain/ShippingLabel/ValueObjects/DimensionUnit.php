@@ -11,8 +11,8 @@ enum DimensionUnit: string
     public static function fromString(string $unit): self
     {
         $normalized = strtolower(trim($unit));
-        
-        return self::tryFrom($normalized) 
+
+        return self::tryFrom($normalized)
             ?? throw new \InvalidArgumentException("Invalid dimension unit: {$unit}. Allowed units: in, cm, mm");
     }
 

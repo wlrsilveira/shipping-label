@@ -10,7 +10,7 @@
                 </div>
             </div>
 
-            <div class="mt-8">
+            <div class="mt-8 space-y-6">
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-3">
                     <div class="bg-white overflow-hidden shadow-lg rounded-xl border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                         <div class="p-6">
@@ -42,6 +42,25 @@
                         </div>
                     </div>
                 </div>
+
+                <div>
+                    <h2 class="text-2xl font-bold text-turno-primary mb-4">Shipping Labels by Status</h2>
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        <StatusCard
+                            v-for="(stat, status) in shippingLabelStats"
+                            :key="status"
+                            :title="stat.label"
+                            :count="stat.count"
+                            :icon="getStatusIcon(status)"
+                            :icon-bg-class="getStatusIconBgClass(status)"
+                            :icon-color-class="getStatusIconColorClass(status)"
+                            :footer-bg-class="getStatusFooterBgClass(status)"
+                            :link-color-class="getStatusLinkColorClass(status)"
+                            :link-text="`View ${stat.label.toLowerCase()} labels`"
+                            :href="route('shipping-labels.index', { status: status })"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>
@@ -49,13 +68,65 @@
 
 <script setup>
 import AuthenticatedLayout from '@/Pages/Layouts/AuthenticatedLayout.vue';
+import StatusCard from '@/Components/StatusCard.vue';
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { UserGroupIcon, ArrowRightIcon } from '@heroicons/vue/24/outline';
+import { UserGroupIcon, ArrowRightIcon, ClockIcon, CheckCircleIcon, XCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 
 defineProps({
     auth: Object,
     usersCount: Number,
+    shippingLabelStats: Object,
 });
+
+const getStatusIcon = (status) => {
+    const iconMap = {
+        'pending': ClockIcon,
+        'created': CheckCircleIcon,
+        'failed': XCircleIcon,
+        'cancelled': XMarkIcon,
+    };
+    return iconMap[status] || ClockIcon;
+};
+
+const getStatusIconBgClass = (status) => {
+    const classMap = {
+        'pending': 'bg-yellow-100',
+        'created': 'bg-green-100',
+        'failed': 'bg-red-100',
+        'cancelled': 'bg-gray-100',
+    };
+    return classMap[status] || 'bg-gray-100';
+};
+
+const getStatusIconColorClass = (status) => {
+    const classMap = {
+        'pending': 'text-yellow-600',
+        'created': 'text-green-600',
+        'failed': 'text-red-600',
+        'cancelled': 'text-gray-600',
+    };
+    return classMap[status] || 'text-gray-600';
+};
+
+const getStatusFooterBgClass = (status) => {
+    const classMap = {
+        'pending': 'bg-yellow-50',
+        'created': 'bg-green-50',
+        'failed': 'bg-red-50',
+        'cancelled': 'bg-gray-50',
+    };
+    return classMap[status] || 'bg-gray-50';
+};
+
+const getStatusLinkColorClass = (status) => {
+    const classMap = {
+        'pending': 'text-yellow-700',
+        'created': 'text-green-700',
+        'failed': 'text-red-700',
+        'cancelled': 'text-gray-700',
+    };
+    return classMap[status] || 'text-gray-700';
+};
 </script>
 
