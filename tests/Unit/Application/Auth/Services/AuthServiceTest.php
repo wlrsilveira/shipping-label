@@ -57,7 +57,7 @@ class AuthServiceTest extends TestCase
         );
     }
 
-    public function test_pode_fazer_login_com_credenciais_validas(): void
+    public function test_can_login_with_valid_credentials(): void
     {
         $email = new Email('test@example.com');
         $dto = new LoginDTO($email, 'password', false);
@@ -101,7 +101,7 @@ class AuthServiceTest extends TestCase
         $this->assertEquals($domainUser, $result);
     }
 
-    public function test_lanca_excecao_ao_fazer_login_com_email_invalido(): void
+    public function test_throws_exception_when_logging_in_with_invalid_email(): void
     {
         $email = new Email('test@example.com');
         $dto = new LoginDTO($email, 'password', false);
@@ -117,7 +117,7 @@ class AuthServiceTest extends TestCase
         $this->authService->login($dto);
     }
 
-    public function test_lanca_excecao_ao_fazer_login_com_senha_invalida(): void
+    public function test_throws_exception_when_logging_in_with_invalid_password(): void
     {
         $email = new Email('test@example.com');
         $dto = new LoginDTO($email, 'wrong_password', false);
@@ -146,7 +146,7 @@ class AuthServiceTest extends TestCase
         $this->authService->login($dto);
     }
 
-    public function test_pode_fazer_registro_de_usuario(): void
+    public function test_can_register_user(): void
     {
         $createUserDTO = new CreateUserDTO(
             name: new Name('Test User'),
@@ -195,7 +195,7 @@ class AuthServiceTest extends TestCase
         $this->assertEquals($domainUser, $result);
     }
 
-    public function test_lanca_excecao_ao_registrar_usuario_existente(): void
+    public function test_throws_exception_when_registering_existing_user(): void
     {
         $createUserDTO = new CreateUserDTO(
             name: new Name('Test User'),
@@ -223,7 +223,7 @@ class AuthServiceTest extends TestCase
         $this->authService->register($registerDTO);
     }
 
-    public function test_pode_fazer_logout(): void
+    public function test_can_logout(): void
     {
         $this->guard
             ->expects($this->once())
@@ -232,4 +232,3 @@ class AuthServiceTest extends TestCase
         $this->authService->logout();
     }
 }
-

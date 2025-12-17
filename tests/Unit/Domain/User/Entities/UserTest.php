@@ -19,7 +19,7 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_pode_criar_usuario(): void
+    public function test_can_create_user(): void
     {
         $user = $this->createUser();
 
@@ -29,7 +29,7 @@ class UserTest extends TestCase
         $this->assertEquals('hashed_password', $user->getHashedPassword());
     }
 
-    public function test_pode_atualizar_nome(): void
+    public function test_can_update_name(): void
     {
         $user = $this->createUser();
         $newName = new Name('Jane Doe');
@@ -39,7 +39,7 @@ class UserTest extends TestCase
         $this->assertEquals('Jane Doe', $user->getName()->getValue());
     }
 
-    public function test_pode_atualizar_email(): void
+    public function test_can_update_email(): void
     {
         $user = $this->createUser();
         $newEmail = new Email('jane@example.com');
@@ -49,7 +49,7 @@ class UserTest extends TestCase
         $this->assertEquals('jane@example.com', $user->getEmail()->getValue());
     }
 
-    public function test_pode_atualizar_senha(): void
+    public function test_can_update_password(): void
     {
         $user = $this->createUser();
 
@@ -58,7 +58,7 @@ class UserTest extends TestCase
         $this->assertEquals('new_hashed_password', $user->getHashedPassword());
     }
 
-    public function test_pode_criar_usuario_sem_id(): void
+    public function test_can_create_user_without_id(): void
     {
         $user = new User(
             id: null,
@@ -70,7 +70,7 @@ class UserTest extends TestCase
         $this->assertNull($user->getId());
     }
 
-    public function test_pode_obter_datas(): void
+    public function test_can_get_dates(): void
     {
         $createdAt = new \DateTimeImmutable('2025-01-01 10:00:00');
         $updatedAt = new \DateTimeImmutable('2025-01-02 10:00:00');
@@ -90,4 +90,3 @@ class UserTest extends TestCase
         $this->assertEquals($updatedAt, $user->getUpdatedAt());
     }
 }
-

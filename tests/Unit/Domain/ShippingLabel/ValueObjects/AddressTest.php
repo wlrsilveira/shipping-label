@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class AddressTest extends TestCase
 {
-    public function test_pode_criar_endereco_valido(): void
+    public function test_can_create_valid_address(): void
     {
         $address = new Address(
             street1: '123 Main St',
@@ -35,7 +35,7 @@ class AddressTest extends TestCase
         $this->assertEquals('Acme Corp', $address->getCompany());
     }
 
-    public function test_pode_criar_endereco_sem_campos_opcionais(): void
+    public function test_can_create_address_without_optional_fields(): void
     {
         $address = new Address(
             street1: '123 Main St',
@@ -52,7 +52,7 @@ class AddressTest extends TestCase
         $this->assertNull($address->getCompany());
     }
 
-    public function test_lanca_excecao_para_rua_vazia(): void
+    public function test_throws_exception_for_empty_street(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Street address cannot be empty');
@@ -67,7 +67,7 @@ class AddressTest extends TestCase
         );
     }
 
-    public function test_lanca_excecao_para_rua_muito_longa(): void
+    public function test_throws_exception_for_street_too_long(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Street address cannot exceed 255 characters');
@@ -82,7 +82,7 @@ class AddressTest extends TestCase
         );
     }
 
-    public function test_lanca_excecao_para_cidade_vazia(): void
+    public function test_throws_exception_for_empty_city(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('City cannot be empty');
@@ -97,7 +97,7 @@ class AddressTest extends TestCase
         );
     }
 
-    public function test_lanca_excecao_para_cidade_muito_longa(): void
+    public function test_throws_exception_for_city_too_long(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('City cannot exceed 100 characters');
@@ -112,7 +112,7 @@ class AddressTest extends TestCase
         );
     }
 
-    public function test_lanca_excecao_para_cep_invalido(): void
+    public function test_throws_exception_for_invalid_zip_code(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid US ZIP code format');
@@ -127,7 +127,7 @@ class AddressTest extends TestCase
         );
     }
 
-    public function test_aceita_cep_formato_5_digitos(): void
+    public function test_accepts_5_digit_zip_code_format(): void
     {
         $address = new Address(
             street1: '123 Main St',
@@ -141,7 +141,7 @@ class AddressTest extends TestCase
         $this->assertEquals('90001', $address->getZipCode());
     }
 
-    public function test_aceita_cep_formato_9_digitos(): void
+    public function test_accepts_9_digit_zip_code_format(): void
     {
         $address = new Address(
             street1: '123 Main St',
@@ -155,7 +155,7 @@ class AddressTest extends TestCase
         $this->assertEquals('90001-1234', $address->getZipCode());
     }
 
-    public function test_lanca_excecao_para_telefone_invalido(): void
+    public function test_throws_exception_for_invalid_phone(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid phone number format');
@@ -171,7 +171,7 @@ class AddressTest extends TestCase
         );
     }
 
-    public function test_aceita_telefone_valido(): void
+    public function test_accepts_valid_phone(): void
     {
         $address = new Address(
             street1: '123 Main St',
@@ -186,7 +186,7 @@ class AddressTest extends TestCase
         $this->assertEquals('(123) 456-7890', $address->getPhone());
     }
 
-    public function test_pode_converter_para_array(): void
+    public function test_can_convert_to_array(): void
     {
         $address = new Address(
             street1: '123 Main St',
@@ -215,7 +215,7 @@ class AddressTest extends TestCase
         $this->assertEquals($expected, $address->toArray());
     }
 
-    public function test_pode_criar_de_array(): void
+    public function test_can_create_from_array(): void
     {
         $data = [
             'street1' => '123 Main St',
@@ -237,7 +237,7 @@ class AddressTest extends TestCase
         $this->assertEquals(USState::CALIFORNIA, $address->getState());
     }
 
-    public function test_pode_comparar_enderecos_iguais(): void
+    public function test_can_compare_equal_addresses(): void
     {
         $address1 = new Address(
             street1: '123 Main St',
@@ -260,7 +260,7 @@ class AddressTest extends TestCase
         $this->assertTrue($address1->equals($address2));
     }
 
-    public function test_pode_comparar_enderecos_diferentes(): void
+    public function test_can_compare_different_addresses(): void
     {
         $address1 = new Address(
             street1: '123 Main St',
@@ -283,4 +283,3 @@ class AddressTest extends TestCase
         $this->assertFalse($address1->equals($address2));
     }
 }
-

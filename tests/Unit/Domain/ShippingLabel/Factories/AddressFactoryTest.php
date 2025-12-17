@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class AddressFactoryTest extends TestCase
 {
-    public function test_pode_criar_endereco(): void
+    public function test_can_create_address(): void
     {
         $address = AddressFactory::create(
             street1: '123 Main St',
@@ -31,7 +31,7 @@ class AddressFactoryTest extends TestCase
         $this->assertEquals(USState::CALIFORNIA, $address->getState());
     }
 
-    public function test_pode_criar_endereco_padrao(): void
+    public function test_can_create_default_address(): void
     {
         $address = AddressFactory::makeDefault();
 
@@ -44,7 +44,7 @@ class AddressFactoryTest extends TestCase
         $this->assertEquals('John Doe', $address->getName());
     }
 
-    public function test_pode_criar_endereco_sem_campos_opcionais(): void
+    public function test_can_create_address_without_optional_fields(): void
     {
         $address = AddressFactory::makeWithoutOptionalFields();
 
@@ -58,7 +58,7 @@ class AddressFactoryTest extends TestCase
         $this->assertNull($address->getCompany());
     }
 
-    public function test_pode_criar_endereco_residencial(): void
+    public function test_can_create_residential_address(): void
     {
         $address = AddressFactory::makeResidential();
 
@@ -71,14 +71,14 @@ class AddressFactoryTest extends TestCase
         $this->assertNull($address->getCompany());
     }
 
-    public function test_pode_criar_endereco_residencial_com_estado_customizado(): void
+    public function test_can_create_residential_address_with_custom_state(): void
     {
         $address = AddressFactory::makeResidential(state: USState::TEXAS);
 
         $this->assertEquals(USState::TEXAS, $address->getState());
     }
 
-    public function test_pode_criar_endereco_comercial(): void
+    public function test_can_create_commercial_address(): void
     {
         $address = AddressFactory::makeCommercial();
 
@@ -90,14 +90,14 @@ class AddressFactoryTest extends TestCase
         $this->assertEquals('Acme Corporation', $address->getCompany());
     }
 
-    public function test_pode_criar_endereco_comercial_com_empresa_customizada(): void
+    public function test_can_create_commercial_address_with_custom_company(): void
     {
         $address = AddressFactory::makeCommercial(company: 'Custom Corp');
 
         $this->assertEquals('Custom Corp', $address->getCompany());
     }
 
-    public function test_pode_criar_de_array(): void
+    public function test_can_create_from_array(): void
     {
         $data = [
             'street1' => '789 Test St',
@@ -116,4 +116,3 @@ class AddressFactoryTest extends TestCase
         $this->assertEquals(USState::TEXAS, $address->getState());
     }
 }
-

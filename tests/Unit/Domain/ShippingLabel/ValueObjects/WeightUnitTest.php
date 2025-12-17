@@ -8,35 +8,35 @@ use PHPUnit\Framework\TestCase;
 
 class WeightUnitTest extends TestCase
 {
-    public function test_pode_criar_unidade_de_peso_valida(): void
+    public function test_can_create_valid_weight_unit(): void
     {
         $unit = WeightUnit::POUND;
 
         $this->assertEquals('lb', $unit->value);
     }
 
-    public function test_pode_criar_de_string(): void
+    public function test_can_create_from_string(): void
     {
         $unit = WeightUnit::fromString('lb');
 
         $this->assertEquals(WeightUnit::POUND, $unit);
     }
 
-    public function test_pode_criar_de_string_uppercase(): void
+    public function test_can_create_from_uppercase_string(): void
     {
         $unit = WeightUnit::fromString('LB');
 
         $this->assertEquals(WeightUnit::POUND, $unit);
     }
 
-    public function test_pode_criar_de_string_com_espacos(): void
+    public function test_can_create_from_string_with_spaces(): void
     {
         $unit = WeightUnit::fromString('  kg  ');
 
         $this->assertEquals(WeightUnit::KILOGRAM, $unit);
     }
 
-    public function test_lanca_excecao_para_unidade_invalida(): void
+    public function test_throws_exception_for_invalid_unit(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid weight unit: invalid');
@@ -44,14 +44,14 @@ class WeightUnitTest extends TestCase
         WeightUnit::fromString('invalid');
     }
 
-    public function test_pode_validar_unidade(): void
+    public function test_can_validate_unit(): void
     {
         $this->assertTrue(WeightUnit::isValid('lb'));
         $this->assertTrue(WeightUnit::isValid('kg'));
         $this->assertFalse(WeightUnit::isValid('invalid'));
     }
 
-    public function test_pode_obter_nome_completo(): void
+    public function test_can_get_full_name(): void
     {
         $this->assertEquals('Pound', WeightUnit::POUND->getFullName());
         $this->assertEquals('Ounce', WeightUnit::OUNCE->getFullName());
@@ -59,7 +59,7 @@ class WeightUnitTest extends TestCase
         $this->assertEquals('Gram', WeightUnit::GRAM->getFullName());
     }
 
-    public function test_pode_verificar_se_e_metrica(): void
+    public function test_can_check_if_is_metric(): void
     {
         $this->assertTrue(WeightUnit::KILOGRAM->isMetric());
         $this->assertTrue(WeightUnit::GRAM->isMetric());
@@ -67,7 +67,7 @@ class WeightUnitTest extends TestCase
         $this->assertFalse(WeightUnit::OUNCE->isMetric());
     }
 
-    public function test_pode_verificar_se_e_imperial(): void
+    public function test_can_check_if_is_imperial(): void
     {
         $this->assertTrue(WeightUnit::POUND->isImperial());
         $this->assertTrue(WeightUnit::OUNCE->isImperial());
@@ -75,4 +75,3 @@ class WeightUnitTest extends TestCase
         $this->assertFalse(WeightUnit::GRAM->isImperial());
     }
 }
-

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class CreateUserDTOTest extends TestCase
 {
-    public function test_pode_criar_dto(): void
+    public function test_can_create_dto(): void
     {
         $name = new Name('Test User');
         $email = new Email('test@example.com');
@@ -21,7 +21,7 @@ class CreateUserDTOTest extends TestCase
         $this->assertEquals('password', $dto->plainPassword);
     }
 
-    public function test_pode_criar_de_array(): void
+    public function test_can_create_from_array(): void
     {
         $data = [
             'name' => 'Test User',
@@ -36,4 +36,3 @@ class CreateUserDTOTest extends TestCase
         $this->assertEquals('password123', $dto->plainPassword);
     }
 }
-

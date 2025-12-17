@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class UpdateUserDTOTest extends TestCase
 {
-    public function test_pode_criar_dto_com_senha(): void
+    public function test_can_create_dto_with_password(): void
     {
         $name = new Name('Test User');
         $email = new Email('test@example.com');
@@ -21,7 +21,7 @@ class UpdateUserDTOTest extends TestCase
         $this->assertEquals('password', $dto->plainPassword);
     }
 
-    public function test_pode_criar_dto_sem_senha(): void
+    public function test_can_create_dto_without_password(): void
     {
         $name = new Name('Test User');
         $email = new Email('test@example.com');
@@ -33,7 +33,7 @@ class UpdateUserDTOTest extends TestCase
         $this->assertNull($dto->plainPassword);
     }
 
-    public function test_pode_criar_de_array_com_senha(): void
+    public function test_can_create_from_array_with_password(): void
     {
         $data = [
             'name' => 'Test User',
@@ -48,7 +48,7 @@ class UpdateUserDTOTest extends TestCase
         $this->assertEquals('newpassword', $dto->plainPassword);
     }
 
-    public function test_pode_criar_de_array_sem_senha(): void
+    public function test_can_create_from_array_without_password(): void
     {
         $data = [
             'name' => 'Test User',
@@ -62,4 +62,3 @@ class UpdateUserDTOTest extends TestCase
         $this->assertNull($dto->plainPassword);
     }
 }
-

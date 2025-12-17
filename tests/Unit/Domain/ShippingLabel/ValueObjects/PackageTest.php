@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class PackageTest extends TestCase
 {
-    public function test_pode_criar_pacote_valido(): void
+    public function test_can_create_valid_package(): void
     {
         $package = new Package(
             weight: 10.5,
@@ -27,7 +27,7 @@ class PackageTest extends TestCase
         $this->assertEquals(DimensionUnit::INCH, $package->getDimensionUnit());
     }
 
-    public function test_pode_criar_pacote_com_unidades_customizadas(): void
+    public function test_can_create_package_with_custom_units(): void
     {
         $package = new Package(
             weight: 5.0,
@@ -42,7 +42,7 @@ class PackageTest extends TestCase
         $this->assertEquals(DimensionUnit::CENTIMETER, $package->getDimensionUnit());
     }
 
-    public function test_lanca_excecao_para_peso_muito_baixo(): void
+    public function test_throws_exception_for_weight_too_low(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Weight must be at least');
@@ -55,7 +55,7 @@ class PackageTest extends TestCase
         );
     }
 
-    public function test_lanca_excecao_para_peso_muito_alto(): void
+    public function test_throws_exception_for_weight_too_high(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Weight cannot exceed');
@@ -68,7 +68,7 @@ class PackageTest extends TestCase
         );
     }
 
-    public function test_lanca_excecao_para_comprimento_muito_baixo(): void
+    public function test_throws_exception_for_length_too_low(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Length must be at least');
@@ -81,7 +81,7 @@ class PackageTest extends TestCase
         );
     }
 
-    public function test_lanca_excecao_para_largura_muito_baixa(): void
+    public function test_throws_exception_for_width_too_low(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Width must be at least');
@@ -94,7 +94,7 @@ class PackageTest extends TestCase
         );
     }
 
-    public function test_lanca_excecao_para_altura_muito_baixa(): void
+    public function test_throws_exception_for_height_too_low(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Height must be at least');
@@ -107,7 +107,7 @@ class PackageTest extends TestCase
         );
     }
 
-    public function test_lanca_excecao_para_dimensao_muito_alta(): void
+    public function test_throws_exception_for_dimension_too_high(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('cannot exceed');
@@ -120,7 +120,7 @@ class PackageTest extends TestCase
         );
     }
 
-    public function test_pode_calcular_volume(): void
+    public function test_can_calculate_volume(): void
     {
         $package = new Package(
             weight: 10.0,
@@ -132,7 +132,7 @@ class PackageTest extends TestCase
         $this->assertEquals(576.0, $package->getVolume());
     }
 
-    public function test_pode_obter_valor_das_unidades(): void
+    public function test_can_get_unit_values(): void
     {
         $package = new Package(
             weight: 10.0,
@@ -147,7 +147,7 @@ class PackageTest extends TestCase
         $this->assertEquals('cm', $package->getDimensionUnitValue());
     }
 
-    public function test_pode_converter_para_array(): void
+    public function test_can_convert_to_array(): void
     {
         $package = new Package(
             weight: 10.5,
@@ -168,7 +168,7 @@ class PackageTest extends TestCase
         $this->assertEquals($expected, $package->toArray());
     }
 
-    public function test_pode_criar_de_array(): void
+    public function test_can_create_from_array(): void
     {
         $data = [
             'weight' => 10.5,
@@ -187,7 +187,7 @@ class PackageTest extends TestCase
         $this->assertEquals(DimensionUnit::CENTIMETER, $package->getDimensionUnit());
     }
 
-    public function test_pode_comparar_pacotes_iguais(): void
+    public function test_can_compare_equal_packages(): void
     {
         $package1 = new Package(10.0, 12.0, 8.0, 6.0);
         $package2 = new Package(10.0, 12.0, 8.0, 6.0);
@@ -195,7 +195,7 @@ class PackageTest extends TestCase
         $this->assertTrue($package1->equals($package2));
     }
 
-    public function test_pode_comparar_pacotes_diferentes(): void
+    public function test_can_compare_different_packages(): void
     {
         $package1 = new Package(10.0, 12.0, 8.0, 6.0);
         $package2 = new Package(11.0, 12.0, 8.0, 6.0);
@@ -203,4 +203,3 @@ class PackageTest extends TestCase
         $this->assertFalse($package1->equals($package2));
     }
 }
-

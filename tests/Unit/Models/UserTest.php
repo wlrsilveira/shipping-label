@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
 {
-    public function test_fillable_contem_campos_corretos(): void
+    public function test_fillable_contains_correct_fields(): void
     {
         $user = new User();
         $fillable = $user->getFillable();
@@ -17,7 +17,7 @@ class UserTest extends TestCase
         $this->assertContains('password', $fillable);
     }
 
-    public function test_hidden_contem_campos_corretos(): void
+    public function test_hidden_contains_correct_fields(): void
     {
         $user = new User();
         $hidden = $user->getHidden();
@@ -26,7 +26,7 @@ class UserTest extends TestCase
         $this->assertContains('remember_token', $hidden);
     }
 
-    public function test_casts_contem_configuracoes_corretas(): void
+    public function test_casts_contains_correct_configurations(): void
     {
         $user = new User();
         $casts = $user->getCasts();
@@ -37,4 +37,3 @@ class UserTest extends TestCase
         $this->assertEquals('hashed', $casts['password']);
     }
 }
-

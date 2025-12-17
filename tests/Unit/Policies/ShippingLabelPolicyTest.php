@@ -37,14 +37,14 @@ class ShippingLabelPolicyTest extends TestCase
         return $label;
     }
 
-    public function test_qualquer_usuario_pode_ver_todas_labels(): void
+    public function test_any_user_can_view_all_labels(): void
     {
         $user = $this->createUser(1);
 
         $this->assertTrue($this->policy->viewAny($user));
     }
 
-    public function test_usuario_pode_ver_sua_propria_label(): void
+    public function test_user_can_view_own_label(): void
     {
         $user = $this->createUser(1);
         $label = $this->createShippingLabel(1, 1);
@@ -52,7 +52,7 @@ class ShippingLabelPolicyTest extends TestCase
         $this->assertTrue($this->policy->view($user, $label));
     }
 
-    public function test_usuario_nao_pode_ver_label_de_outro_usuario(): void
+    public function test_user_cannot_view_another_users_label(): void
     {
         $user = $this->createUser(1);
         $label = $this->createShippingLabel(1, 2);
@@ -60,14 +60,14 @@ class ShippingLabelPolicyTest extends TestCase
         $this->assertFalse($this->policy->view($user, $label));
     }
 
-    public function test_qualquer_usuario_pode_criar_labels(): void
+    public function test_any_user_can_create_labels(): void
     {
         $user = $this->createUser(1);
 
         $this->assertTrue($this->policy->create($user));
     }
 
-    public function test_usuario_pode_deletar_sua_propria_label(): void
+    public function test_user_can_delete_own_label(): void
     {
         $user = $this->createUser(1);
         $label = $this->createShippingLabel(1, 1);
@@ -75,7 +75,7 @@ class ShippingLabelPolicyTest extends TestCase
         $this->assertTrue($this->policy->delete($user, $label));
     }
 
-    public function test_usuario_nao_pode_deletar_label_de_outro_usuario(): void
+    public function test_user_cannot_delete_another_users_label(): void
     {
         $user = $this->createUser(1);
         $label = $this->createShippingLabel(1, 2);
@@ -83,4 +83,3 @@ class ShippingLabelPolicyTest extends TestCase
         $this->assertFalse($this->policy->delete($user, $label));
     }
 }
-

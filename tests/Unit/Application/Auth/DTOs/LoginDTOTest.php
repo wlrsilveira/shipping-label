@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class LoginDTOTest extends TestCase
 {
-    public function test_pode_criar_dto(): void
+    public function test_can_create_dto(): void
     {
         $email = new Email('test@example.com');
         $dto = new LoginDTO($email, 'password', true);
@@ -18,7 +18,7 @@ class LoginDTOTest extends TestCase
         $this->assertTrue($dto->remember);
     }
 
-    public function test_remember_padrao_e_false(): void
+    public function test_default_remember_is_false(): void
     {
         $email = new Email('test@example.com');
         $dto = new LoginDTO($email, 'password');
@@ -26,7 +26,7 @@ class LoginDTOTest extends TestCase
         $this->assertFalse($dto->remember);
     }
 
-    public function test_pode_criar_de_array(): void
+    public function test_can_create_from_array(): void
     {
         $data = [
             'email' => 'test@example.com',
@@ -41,7 +41,7 @@ class LoginDTOTest extends TestCase
         $this->assertTrue($dto->remember);
     }
 
-    public function test_pode_criar_de_array_sem_remember(): void
+    public function test_can_create_from_array_without_remember(): void
     {
         $data = [
             'email' => 'test@example.com',
@@ -53,4 +53,3 @@ class LoginDTOTest extends TestCase
         $this->assertFalse($dto->remember);
     }
 }
-

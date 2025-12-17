@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class ShippingProviderManagerTest extends TestCase
 {
-    public function test_pode_registrar_provider(): void
+    public function test_can_register_provider(): void
     {
         $manager = new ShippingProviderManager();
         $provider = $this->createMock(ShippingProviderInterface::class);
@@ -21,7 +21,7 @@ class ShippingProviderManagerTest extends TestCase
         $this->assertEquals($provider, $providers[0]);
     }
 
-    public function test_pode_registrar_multiplos_providers(): void
+    public function test_can_register_multiple_providers(): void
     {
         $manager = new ShippingProviderManager();
         $provider1 = $this->createMock(ShippingProviderInterface::class);
@@ -37,7 +37,7 @@ class ShippingProviderManagerTest extends TestCase
         $this->assertEquals($provider2, $providers[1]);
     }
 
-    public function test_retorna_array_vazio_quando_nao_ha_providers(): void
+    public function test_returns_empty_array_when_there_are_no_providers(): void
     {
         $manager = new ShippingProviderManager();
 
@@ -47,4 +47,3 @@ class ShippingProviderManagerTest extends TestCase
         $this->assertCount(0, $providers);
     }
 }
-

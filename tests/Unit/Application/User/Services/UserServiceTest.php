@@ -38,7 +38,7 @@ class UserServiceTest extends TestCase
         );
     }
 
-    public function test_pode_criar_usuario(): void
+    public function test_can_create_user(): void
     {
         $dto = new CreateUserDTO(
             name: new Name('Test User'),
@@ -71,7 +71,7 @@ class UserServiceTest extends TestCase
         $this->assertEquals('test@example.com', $result->getEmail()->getValue());
     }
 
-    public function test_pode_atualizar_usuario(): void
+    public function test_can_update_user(): void
     {
         $dto = new UpdateUserDTO(
             name: new Name('Updated User'),
@@ -109,7 +109,7 @@ class UserServiceTest extends TestCase
         $this->assertEquals('updated@example.com', $result->getEmail()->getValue());
     }
 
-    public function test_pode_atualizar_usuario_sem_senha(): void
+    public function test_can_update_user_without_password(): void
     {
         $dto = new UpdateUserDTO(
             name: new Name('Updated User'),
@@ -144,7 +144,7 @@ class UserServiceTest extends TestCase
         $this->assertEquals('Updated User', $result->getName()->getValue());
     }
 
-    public function test_lanca_excecao_ao_atualizar_usuario_inexistente(): void
+    public function test_throws_exception_when_updating_nonexistent_user(): void
     {
         $dto = new UpdateUserDTO(
             name: new Name('Updated User'),
@@ -163,7 +163,7 @@ class UserServiceTest extends TestCase
         $this->userService->updateUser(999, $dto);
     }
 
-    public function test_pode_deletar_usuario(): void
+    public function test_can_delete_user(): void
     {
         $user = new User(
             id: 1,
@@ -186,7 +186,7 @@ class UserServiceTest extends TestCase
         $this->userService->deleteUser(1);
     }
 
-    public function test_lanca_excecao_ao_deletar_usuario_inexistente(): void
+    public function test_throws_exception_when_deleting_nonexistent_user(): void
     {
         $this->userRepository
             ->expects($this->once())
@@ -199,7 +199,7 @@ class UserServiceTest extends TestCase
         $this->userService->deleteUser(999);
     }
 
-    public function test_pode_obter_usuario_por_id(): void
+    public function test_can_get_user_by_id(): void
     {
         $user = new User(
             id: 1,
@@ -219,7 +219,7 @@ class UserServiceTest extends TestCase
         $this->assertEquals($user, $result);
     }
 
-    public function test_pode_obter_usuarios_paginados(): void
+    public function test_can_get_paginated_users(): void
     {
         $paginator = new LengthAwarePaginator([], 0, 10);
 
@@ -234,7 +234,7 @@ class UserServiceTest extends TestCase
         $this->assertEquals($paginator, $result);
     }
 
-    public function test_pode_obter_total_de_usuarios(): void
+    public function test_can_get_total_users_count(): void
     {
         $this->eloquentUserRepository
             ->expects($this->once())
@@ -246,4 +246,3 @@ class UserServiceTest extends TestCase
         $this->assertEquals(42, $result);
     }
 }
-

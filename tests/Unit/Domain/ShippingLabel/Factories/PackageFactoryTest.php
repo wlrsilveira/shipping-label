@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class PackageFactoryTest extends TestCase
 {
-    public function test_pode_criar_pacote(): void
+    public function test_can_create_package(): void
     {
         $package = PackageFactory::create(
             weight: 10.0,
@@ -28,7 +28,7 @@ class PackageFactoryTest extends TestCase
         $this->assertEquals(DimensionUnit::INCH, $package->getDimensionUnit());
     }
 
-    public function test_pode_criar_pacote_com_unidades_customizadas(): void
+    public function test_can_create_package_with_custom_units(): void
     {
         $package = PackageFactory::create(
             weight: 5.0,
@@ -43,7 +43,7 @@ class PackageFactoryTest extends TestCase
         $this->assertEquals(DimensionUnit::CENTIMETER, $package->getDimensionUnit());
     }
 
-    public function test_pode_criar_pacote_padrao(): void
+    public function test_can_create_default_package(): void
     {
         $package = PackageFactory::makeDefault();
 
@@ -54,7 +54,7 @@ class PackageFactoryTest extends TestCase
         $this->assertEquals(4.0, $package->getHeight());
     }
 
-    public function test_pode_criar_pacote_pequeno(): void
+    public function test_can_create_small_package(): void
     {
         $package = PackageFactory::makeSmall();
 
@@ -65,7 +65,7 @@ class PackageFactoryTest extends TestCase
         $this->assertEquals(2.0, $package->getHeight());
     }
 
-    public function test_pode_criar_pacote_medio(): void
+    public function test_can_create_medium_package(): void
     {
         $package = PackageFactory::makeMedium();
 
@@ -76,7 +76,7 @@ class PackageFactoryTest extends TestCase
         $this->assertEquals(8.0, $package->getHeight());
     }
 
-    public function test_pode_criar_pacote_grande(): void
+    public function test_can_create_large_package(): void
     {
         $package = PackageFactory::makeLarge();
 
@@ -87,7 +87,7 @@ class PackageFactoryTest extends TestCase
         $this->assertEquals(12.0, $package->getHeight());
     }
 
-    public function test_pode_criar_pacote_oversized(): void
+    public function test_can_create_oversized_package(): void
     {
         $package = PackageFactory::makeOversized();
 
@@ -98,7 +98,7 @@ class PackageFactoryTest extends TestCase
         $this->assertEquals(24.0, $package->getHeight());
     }
 
-    public function test_pode_criar_pacote_com_unidades_metricas(): void
+    public function test_can_create_package_with_metric_units(): void
     {
         $package = PackageFactory::makeWithMetricUnits();
 
@@ -111,7 +111,7 @@ class PackageFactoryTest extends TestCase
         $this->assertEquals(DimensionUnit::CENTIMETER, $package->getDimensionUnit());
     }
 
-    public function test_pode_criar_de_array(): void
+    public function test_can_create_from_array(): void
     {
         $data = [
             'weight' => 7.5,
@@ -131,4 +131,3 @@ class PackageFactoryTest extends TestCase
         $this->assertEquals(DimensionUnit::CENTIMETER, $package->getDimensionUnit());
     }
 }
-

@@ -8,21 +8,21 @@ use PHPUnit\Framework\TestCase;
 
 class NameTest extends TestCase
 {
-    public function test_pode_criar_nome_valido(): void
+    public function test_can_create_valid_name(): void
     {
         $name = new Name('John Doe');
 
         $this->assertEquals('John Doe', $name->getValue());
     }
 
-    public function test_pode_converter_nome_para_string(): void
+    public function test_can_convert_name_to_string(): void
     {
         $name = new Name('John Doe');
 
         $this->assertEquals('John Doe', (string) $name);
     }
 
-    public function test_lanca_excecao_para_nome_vazio(): void
+    public function test_throws_exception_for_empty_name(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Name cannot be empty');
@@ -30,7 +30,7 @@ class NameTest extends TestCase
         new Name('');
     }
 
-    public function test_lanca_excecao_para_nome_apenas_espacos(): void
+    public function test_throws_exception_for_name_with_only_spaces(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Name cannot be empty');
@@ -38,7 +38,7 @@ class NameTest extends TestCase
         new Name('   ');
     }
 
-    public function test_lanca_excecao_para_nome_muito_longo(): void
+    public function test_throws_exception_for_name_too_long(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Name cannot exceed 255 characters');
@@ -46,7 +46,7 @@ class NameTest extends TestCase
         new Name(str_repeat('a', 256));
     }
 
-    public function test_pode_comparar_nomes_iguais(): void
+    public function test_can_compare_equal_names(): void
     {
         $name1 = new Name('John Doe');
         $name2 = new Name('John Doe');
@@ -54,7 +54,7 @@ class NameTest extends TestCase
         $this->assertTrue($name1->equals($name2));
     }
 
-    public function test_pode_comparar_nomes_diferentes(): void
+    public function test_can_compare_different_names(): void
     {
         $name1 = new Name('John Doe');
         $name2 = new Name('Jane Doe');
@@ -62,18 +62,17 @@ class NameTest extends TestCase
         $this->assertFalse($name1->equals($name2));
     }
 
-    public function test_pode_converter_para_array(): void
+    public function test_can_convert_to_array(): void
     {
         $name = new Name('John Doe');
 
         $this->assertEquals(['name' => 'John Doe'], $name->toArray());
     }
 
-    public function test_pode_criar_de_array(): void
+    public function test_can_create_from_array(): void
     {
         $name = Name::fromArray(['name' => 'John Doe']);
 
         $this->assertEquals('John Doe', $name->getValue());
     }
 }
-

@@ -35,7 +35,7 @@ class ShippingLabelTest extends TestCase
         );
     }
 
-    public function test_pode_criar_shipping_label(): void
+    public function test_can_create_shipping_label(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -50,7 +50,7 @@ class ShippingLabelTest extends TestCase
         $this->assertInstanceOf(\DateTimeImmutable::class, $label->getCreatedAt());
     }
 
-    public function test_pode_marcar_como_criado(): void
+    public function test_can_mark_as_created(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -80,7 +80,7 @@ class ShippingLabelTest extends TestCase
         $this->assertTrue($label->isCreated());
     }
 
-    public function test_pode_marcar_como_falhou(): void
+    public function test_can_mark_as_failed(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -95,7 +95,7 @@ class ShippingLabelTest extends TestCase
         $this->assertTrue($label->isFailed());
     }
 
-    public function test_pode_cancelar_label(): void
+    public function test_can_cancel_label(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -110,7 +110,7 @@ class ShippingLabelTest extends TestCase
         $this->assertTrue($label->isCancelled());
     }
 
-    public function test_pode_verificar_se_e_pending(): void
+    public function test_can_check_if_is_pending(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -122,7 +122,7 @@ class ShippingLabelTest extends TestCase
         $this->assertTrue($label->isPending());
     }
 
-    public function test_pode_verificar_se_tem_label(): void
+    public function test_can_check_if_has_label(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -146,7 +146,7 @@ class ShippingLabelTest extends TestCase
         $this->assertTrue($label->hasLabel());
     }
 
-    public function test_pode_verificar_se_pode_ser_cancelado(): void
+    public function test_can_check_if_can_be_cancelled(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -161,7 +161,7 @@ class ShippingLabelTest extends TestCase
         $this->assertFalse($label->canBeCancelled());
     }
 
-    public function test_pode_verificar_propriedade(): void
+    public function test_can_check_ownership(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -174,7 +174,7 @@ class ShippingLabelTest extends TestCase
         $this->assertFalse($label->isOwnedBy(2));
     }
 
-    public function test_lanca_excecao_ao_garantir_propriedade_incorreta(): void
+    public function test_throws_exception_when_ensuring_incorrect_ownership(): void
     {
         $label = new ShippingLabel(
             id: 1,
@@ -189,7 +189,7 @@ class ShippingLabelTest extends TestCase
         $label->ensureOwnedBy(2);
     }
 
-    public function test_nao_lanca_excecao_ao_garantir_propriedade_correta(): void
+    public function test_does_not_throw_exception_when_ensuring_correct_ownership(): void
     {
         $label = new ShippingLabel(
             id: 1,
@@ -204,7 +204,7 @@ class ShippingLabelTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function test_pode_atualizar_endereco_de_origem(): void
+    public function test_can_update_from_address(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -228,7 +228,7 @@ class ShippingLabelTest extends TestCase
         $this->assertEquals('San Francisco', $label->getFromAddress()->getCity());
     }
 
-    public function test_pode_atualizar_endereco_de_destino(): void
+    public function test_can_update_to_address(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -252,7 +252,7 @@ class ShippingLabelTest extends TestCase
         $this->assertEquals('New York', $label->getToAddress()->getCity());
     }
 
-    public function test_pode_atualizar_pacote(): void
+    public function test_can_update_package(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -274,7 +274,7 @@ class ShippingLabelTest extends TestCase
         $this->assertEquals(15.0, $label->getPackage()->getLength());
     }
 
-    public function test_pode_obter_status_como_string(): void
+    public function test_can_get_status_as_string(): void
     {
         $label = ShippingLabel::create(
             userId: 1,
@@ -286,4 +286,3 @@ class ShippingLabelTest extends TestCase
         $this->assertEquals('pending', $label->getStatusValue());
     }
 }
-

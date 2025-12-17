@@ -33,4 +33,3 @@ class ExceptionsTest extends TestCase
         $this->assertStringContainsString('test@example.com', $exception->getMessage());
     }
 }
-

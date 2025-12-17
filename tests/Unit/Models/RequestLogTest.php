@@ -7,14 +7,14 @@ use PHPUnit\Framework\TestCase;
 
 class RequestLogTest extends TestCase
 {
-    public function test_table_name_esta_correto(): void
+    public function test_table_name_is_correct(): void
     {
         $log = new RequestLog();
 
         $this->assertEquals('request_logs', $log->getTable());
     }
 
-    public function test_fillable_contem_campos_corretos(): void
+    public function test_fillable_contains_correct_fields(): void
     {
         $log = new RequestLog();
         $fillable = $log->getFillable();
@@ -26,7 +26,7 @@ class RequestLogTest extends TestCase
         $this->assertContains('status_code', $fillable);
     }
 
-    public function test_casts_contem_configuracoes_corretas(): void
+    public function test_casts_contains_correct_configurations(): void
     {
         $log = new RequestLog();
         $casts = $log->getCasts();
@@ -44,4 +44,3 @@ class RequestLogTest extends TestCase
         $this->assertEquals('datetime', $casts['updated_at']);
     }
 }
-

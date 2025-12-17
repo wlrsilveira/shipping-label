@@ -27,14 +27,14 @@ class UserPolicyTest extends TestCase
         return $user;
     }
 
-    public function test_qualquer_usuario_pode_ver_todos_usuarios(): void
+    public function test_any_user_can_view_all_users(): void
     {
         $user = $this->createUser(1);
 
         $this->assertTrue($this->policy->viewAny($user));
     }
 
-    public function test_usuario_pode_ver_seu_proprio_perfil(): void
+    public function test_user_can_view_own_profile(): void
     {
         $user = $this->createUser(1);
         $model = $this->createUser(1);
@@ -42,7 +42,7 @@ class UserPolicyTest extends TestCase
         $this->assertTrue($this->policy->view($user, $model));
     }
 
-    public function test_usuario_nao_pode_ver_perfil_de_outro_usuario(): void
+    public function test_user_cannot_view_another_users_profile(): void
     {
         $user = $this->createUser(1);
         $otherUser = $this->createUser(2);
@@ -50,14 +50,14 @@ class UserPolicyTest extends TestCase
         $this->assertFalse($this->policy->view($user, $otherUser));
     }
 
-    public function test_qualquer_usuario_pode_criar_usuarios(): void
+    public function test_any_user_can_create_users(): void
     {
         $user = $this->createUser(1);
 
         $this->assertTrue($this->policy->create($user));
     }
 
-    public function test_usuario_pode_atualizar_seu_proprio_perfil(): void
+    public function test_user_can_update_own_profile(): void
     {
         $user = $this->createUser(1);
         $model = $this->createUser(1);
@@ -65,7 +65,7 @@ class UserPolicyTest extends TestCase
         $this->assertTrue($this->policy->update($user, $model));
     }
 
-    public function test_usuario_nao_pode_atualizar_perfil_de_outro_usuario(): void
+    public function test_user_cannot_update_another_users_profile(): void
     {
         $user = $this->createUser(1);
         $otherUser = $this->createUser(2);
@@ -73,7 +73,7 @@ class UserPolicyTest extends TestCase
         $this->assertFalse($this->policy->update($user, $otherUser));
     }
 
-    public function test_usuario_pode_deletar_outros_usuarios(): void
+    public function test_user_can_delete_other_users(): void
     {
         $user = $this->createUser(1);
         $otherUser = $this->createUser(2);
@@ -81,7 +81,7 @@ class UserPolicyTest extends TestCase
         $this->assertTrue($this->policy->delete($user, $otherUser));
     }
 
-    public function test_usuario_nao_pode_deletar_seu_proprio_perfil(): void
+    public function test_user_cannot_delete_own_profile(): void
     {
         $user = $this->createUser(1);
         $model = $this->createUser(1);
@@ -89,4 +89,3 @@ class UserPolicyTest extends TestCase
         $this->assertFalse($this->policy->delete($user, $model));
     }
 }
-

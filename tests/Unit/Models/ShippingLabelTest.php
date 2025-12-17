@@ -3,19 +3,18 @@
 namespace Tests\Unit\Models;
 
 use App\Models\ShippingLabel;
-use App\Models\User;
 use PHPUnit\Framework\TestCase;
 
 class ShippingLabelTest extends TestCase
 {
-    public function test_table_name_esta_correto(): void
+    public function test_table_name_is_correct(): void
     {
         $label = new ShippingLabel();
 
         $this->assertEquals('shipping_labels', $label->getTable());
     }
 
-    public function test_fillable_contem_campos_corretos(): void
+    public function test_fillable_contains_correct_fields(): void
     {
         $label = new ShippingLabel();
         $fillable = $label->getFillable();
@@ -40,7 +39,7 @@ class ShippingLabelTest extends TestCase
         }
     }
 
-    public function test_casts_contem_configuracoes_corretas(): void
+    public function test_casts_contains_correct_configurations(): void
     {
         $label = new ShippingLabel();
         $casts = $label->getCasts();
@@ -60,11 +59,10 @@ class ShippingLabelTest extends TestCase
         $this->assertEquals('datetime', $casts['updated_at']);
     }
 
-    public function test_metodo_user_existe(): void
+    public function test_user_method_exists(): void
     {
         $label = new ShippingLabel();
 
         $this->assertTrue(method_exists($label, 'user'));
     }
 }
-
