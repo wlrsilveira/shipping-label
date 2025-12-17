@@ -15,7 +15,8 @@ class ShippingLabel
         private Address $fromAddress,
         private Address $toAddress,
         private Package $package,
-        private ?string $easypostShipmentId = null,
+        private ?string $externalShipmentId = null,
+        private ?string $provider = null,
         private ?string $labelUrl = null,
         private ?string $trackingCode = null,
         private ShippingLabelStatus $status = ShippingLabelStatus::PENDING,
@@ -52,9 +53,14 @@ class ShippingLabel
         return $this->package;
     }
 
-    public function getEasypostShipmentId(): ?string
+    public function getExternalShipmentId(): ?string
     {
-        return $this->easypostShipmentId;
+        return $this->externalShipmentId;
+    }
+
+    public function getProvider(): ?string
+    {
+        return $this->provider;
     }
 
     public function getLabelUrl(): ?string
@@ -103,14 +109,16 @@ class ShippingLabel
     }
 
     public function markAsCreated(
-        string $easypostShipmentId,
+        string $externalShipmentId,
+        string $provider,
         string $labelUrl,
         string $trackingCode,
         string $carrier,
         string $service,
         float $rate
     ): void {
-        $this->easypostShipmentId = $easypostShipmentId;
+        $this->externalShipmentId = $externalShipmentId;
+        $this->provider = $provider;
         $this->labelUrl = $labelUrl;
         $this->trackingCode = $trackingCode;
         $this->carrier = $carrier;

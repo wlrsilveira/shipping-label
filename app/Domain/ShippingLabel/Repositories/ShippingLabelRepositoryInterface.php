@@ -20,6 +20,6 @@ interface ShippingLabelRepositoryInterface
 
     public function paginate(int $perPage = 15, ?int $userId = null): array;
 
-    public function existsByEasypostShipmentId(string $shipmentId): bool;
+    public function existsByExternalShipmentId(string $shipmentId, ?string $provider = null): bool;
 }
 
