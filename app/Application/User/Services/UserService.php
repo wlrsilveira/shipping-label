@@ -73,5 +73,10 @@ class UserService
     {
         return $this->eloquentUserRepository->getEloquentPaginated($perPage);
     }
+
+    public function getTotalUsersCount(): int
+    {
+        return $this->eloquentUserRepository->getTotalCount();
+    }
 }
 

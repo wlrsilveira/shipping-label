@@ -1,59 +1,195 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API Turno - Shipping Label Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+System developed with Laravel 12, Vue.js 3, and Inertia.js for managing shipping labels using the EasyPost API.
 
-## About Laravel
+## 🏗️ Architecture
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project uses **Domain-Driven Design (DDD)** and **Clean Architecture**, following best practices for separation of concerns:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```
+app/
+├── Application/          # Application layer (use cases, DTOs, services)
+├── Domain/              # Domain layer (entities, value objects, exceptions)
+├── Infrastructure/      # Infrastructure layer (repositories, external services)
+└── Http/               # Presentation layer (controllers, requests, middleware)
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🚀 Technologies
 
-## Learning Laravel
+- **Backend:** Laravel 12, PHP 8.2+
+- **Frontend:** Vue.js 3, Inertia.js, Tailwind CSS 4
+- **Database:** MySQL/PostgreSQL/SQLite
+- **Queue:** Laravel Queues (for asynchronous label processing)
+- **Broadcasting:** Pusher (for real-time updates)
+- **External API:** EasyPost (for shipping label creation)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 📋 Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- ✅ User authentication (login, register, logout)
+- ✅ User management (full CRUD)
+- ✅ Shipping label creation
+- ✅ Asynchronous label processing
+- ✅ Real-time updates via WebSocket
+- ✅ Dashboard with statistics
+- ✅ Address validation
+- ✅ Permissions and authorization system (Policies)
 
-## Laravel Sponsors
+## 🔧 Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Prerequisites
 
-### Premium Partners
+- PHP 8.2 or higher
+- Composer
+- Node.js 18+ and NPM
+- MySQL/PostgreSQL or SQLite
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Steps
 
-## Contributing
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd api-turno
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. Install PHP dependencies:
+```bash
+composer install
+```
 
-## Code of Conduct
+3. Configure the `.env` file:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. Configure environment variables in `.env`:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=turno
+DB_USERNAME=root
+DB_PASSWORD=
 
-## Security Vulnerabilities
+EASYPOST_API_KEY=your_easypost_api_key
+PUSHER_APP_ID=your_pusher_app_id
+PUSHER_APP_KEY=your_pusher_key
+PUSHER_APP_SECRET=your_pusher_secret
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+> **Note:** Pusher tokens and EasyPost API key configuration examples can be found in the `.env.example` file.
 
-## License
+5. Run migrations:
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+6. Install frontend dependencies:
+```bash
+npm install
+```
+
+7. Build assets:
+```bash
+npm run build
+```
+
+## 🏃 Development
+
+To run the complete development environment (server, queue, logs, and vite):
+
+```bash
+composer dev
+```
+
+Or run individually:
+
+```bash
+# Terminal 1 - PHP Server
+php artisan serve
+
+# Terminal 2 - Queue Worker
+php artisan queue:listen
+
+# Terminal 3 - Vite (frontend)
+npm run dev
+
+# Terminal 4 - Logs (optional)
+php artisan pail
+```
+
+## 📝 Testing
+
+Run tests with:
+
+```bash
+composer test
+# or
+php artisan test
+```
+
+## 🔒 Security
+
+- **Authorization:** Policy system for access control
+- **Authentication:** Laravel Session Authentication
+- **Validation:** Form Requests for data validation
+- **Sanitization:** Strict input validation
+- **Rate Limiting:** Configured on routes when necessary
+
+## 📚 Domain Structure
+
+### Domain: User
+- Entities: `User`
+- Value Objects: `Email`, `Name`
+- Exceptions: `UserNotFoundException`, `InvalidCredentialsException`, etc.
+
+### Domain: ShippingLabel
+- Entities: `ShippingLabel`
+- Value Objects: `Address`, `Package`, `ShippingLabelStatus`, `USState`, etc.
+- Exceptions: `ShippingLabelNotFoundException`, `UnauthorizedAccessException`, etc.
+
+## 🔄 Shipping Label Creation Flow
+
+1. User creates a label through the form
+2. Controller validates data and creates a DTO
+3. Service creates the domain entity
+4. `ProcessShippingLabelJob` is dispatched to the queue
+5. Job processes the label through a Pipeline
+6. Provider (EasyPost) creates the label on external API
+7. `ShippingLabelProcessed` event is fired
+8. Frontend receives update via WebSocket
+
+## 📦 Shipping Providers
+
+The system supports multiple shipping providers through the Strategy pattern:
+
+- **EasyPost** (implemented)
+
+To add a new provider:
+1. Implement `ShippingProviderInterface`
+2. Register it in `AppServiceProvider`
+
+## 🗄️ Database
+
+### Main Tables
+
+- `users` - System users
+- `shipping_labels` - Shipping labels
+- `request_logs` - HTTP request logs for external APIs
+- `jobs` - Queue jobs
+- `sessions` - User sessions
+
+## 🤝 Contributing
+
+1. Follow established code standards (PSR-12)
+2. Write tests for new features
+3. Document significant changes
+4. Use descriptive commits
+
+## 📄 License
+
+This project is licensed under the MIT license.
+
+## 👥 Team
+
+Developed for TURNO company.

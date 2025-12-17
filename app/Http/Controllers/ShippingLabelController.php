@@ -8,12 +8,16 @@ use App\Application\ShippingLabel\Services\ShippingLabelService;
 use App\Domain\ShippingLabel\ValueObjects\ShippingLabelStatus;
 use App\Domain\ShippingLabel\ValueObjects\USState;
 use App\Http\Requests\CreateShippingLabelRequest;
+use App\Models\ShippingLabel as EloquentShippingLabel;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ShippingLabelController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(
         private ShippingLabelService $shippingLabelService
     ) {
@@ -21,11 +25,17 @@ class ShippingLabelController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('viewAny', EloquentShippingLabel::class);
+
         $perPage = (int) $request->get('per_page', 15);
         $status = $request->get('status');
-        $userId = auth()->id();
+        $userId = $request->user()->id;
 
-        $labels = $this->shippingLabelService->getUserShippingLabels($userId, $perPage, $status);
+        $labels = $this->shippingLabelService->getUserShippingLabels(
+            userId: $userId,
+            perPage: $perPage,
+            status: $status,
+        );
 
         $labelsData = $labels->map(function ($label) {
             return ShippingLabelResponseDTO::fromDomain($label)->toArray();
@@ -61,13 +71,17 @@ class ShippingLabelController extends Controller
 
     public function create()
     {
+        $this->authorize('create', EloquentShippingLabel::class);
+
         return Inertia::render('ShippingLabels/Create');
     }
 
     public function store(CreateShippingLabelRequest $request)
     {
+        $this->authorize('create', EloquentShippingLabel::class);
+
         $dto = CreateShippingLabelDTO::fromArray($request->validated());
-        $userId = auth()->id();
+        $userId = $request->user()->id;
 
         $this->shippingLabelService->createShippingLabel($dto, $userId);
 
@@ -78,19 +92,25 @@ class ShippingLabelController extends Controller
 
     public function show(Request $request, int $id)
     {
-        $userId = auth()->id();
+        $userId = $request->user()->id;
 
         $label = $this->shippingLabelService->getShippingLabelById($id, $userId);
         $labelDto = ShippingLabelResponseDTO::fromDomain($label);
+
+        $eloquentLabel = EloquentShippingLabel::findOrFail($id);
+        $this->authorize('view', $eloquentLabel);
 
         return Inertia::render('ShippingLabels/Show', [
             'label' => $labelDto->toArray(),
         ]);
     }
 
-    public function destroy(int $id)
+    public function destroy(Request $request, int $id)
     {
-        $userId = auth()->id();
+        $eloquentLabel = EloquentShippingLabel::findOrFail($id);
+        $this->authorize('delete', $eloquentLabel);
+
+        $userId = $request->user()->id;
 
         $this->shippingLabelService->deleteShippingLabel($id, $userId);
 

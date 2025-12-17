@@ -91,5 +91,10 @@ class EloquentUserRepository implements UserRepositoryInterface
     {
         return EloquentUser::latest()->paginate($perPage);
     }
+
+    public function getTotalCount(): int
+    {
+        return EloquentUser::count();
+    }
 }
 

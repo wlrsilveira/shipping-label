@@ -1,5 +1,8 @@
 <?php
 
+use App\Domain\ShippingLabel\Exceptions\DomainException as ShippingLabelDomainException;
+use App\Domain\ShippingLabel\Exceptions\ShippingLabelNotFoundException;
+use App\Domain\ShippingLabel\Exceptions\UnauthorizedAccessException as ShippingLabelUnauthorizedException;
 use App\Domain\User\Exceptions\DomainException as UserDomainException;
 use App\Domain\User\Exceptions\InvalidCredentialsException;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
@@ -27,6 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+
         $exceptions->render(function (
             UserDomainException $e,
             Request $request
@@ -53,6 +57,30 @@ return Application::configure(basePath: dirname(__DIR__))
             }
             if ($e instanceof UserNotFoundException) {
                 abort(404, $e->getMessage());
+            }
+
+            abort($e->getStatusCode(), $e->getMessage());
+        });
+
+        $exceptions->render(function (
+            ShippingLabelDomainException $e,
+            Request $request
+        ) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'error' => [
+                        'code' => $e->getErrorCode(),
+                        'message' => $e->getMessage(),
+                    ],
+                ], $e->getStatusCode());
+            }
+
+            if ($e instanceof ShippingLabelNotFoundException) {
+                abort(404, $e->getMessage());
+            }
+
+            if ($e instanceof ShippingLabelUnauthorizedException) {
+                abort(403, $e->getMessage());
             }
 
             abort($e->getStatusCode(), $e->getMessage());

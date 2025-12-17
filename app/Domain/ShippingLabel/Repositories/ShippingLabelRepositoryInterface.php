@@ -21,5 +21,7 @@ interface ShippingLabelRepositoryInterface
     public function paginate(int $perPage = 15, ?int $userId = null, ?string $status = null): array;
 
     public function existsByExternalShipmentId(string $shipmentId, ?string $provider = null): bool;
+
+    public function getStatsByStatus(int $userId): array;
 }
 

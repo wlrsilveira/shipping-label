@@ -2,31 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\ShippingLabel\ValueObjects\ShippingLabelStatus;
-use App\Models\ShippingLabel;
-use App\Models\User;
+use App\Application\ShippingLabel\Services\ShippingLabelService;
+use App\Application\User\Services\UserService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function __construct(
+        private UserService $userService,
+        private ShippingLabelService $shippingLabelService
+    ) {
+    }
+
+    public function index(Request $request)
     {
-        $usersCount = User::count();
-        $userId = auth()->id();
+        $userId = $request->user()->id;
 
-        $countsByStatus = ShippingLabel::where('user_id', $userId)
-            ->selectRaw('status, COUNT(*) as count')
-            ->groupBy('status')
-            ->pluck('count', 'status')
-            ->toArray();
-
-        $shippingLabelStats = [];
-        foreach (ShippingLabelStatus::cases() as $status) {
-            $shippingLabelStats[$status->value] = [
-                'count' => $countsByStatus[$status->value] ?? 0,
-                'label' => $status->getLabel(),
-            ];
-        }
+        $shippingLabelStats = $this->shippingLabelService->getUserStatsByStatus($userId);
+        $usersCount = $this->userService->getTotalUsersCount();
 
         return Inertia::render('Dashboard', [
             'usersCount' => $usersCount,

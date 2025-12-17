@@ -8,6 +8,7 @@ use App\Domain\ShippingLabel\Exceptions\ShippingLabelNotFoundException;
 use App\Domain\ShippingLabel\Factories\AddressFactory;
 use App\Domain\ShippingLabel\Factories\PackageFactory;
 use App\Domain\ShippingLabel\Repositories\ShippingLabelRepositoryInterface;
+use App\Domain\ShippingLabel\ValueObjects\ShippingLabelStatus;
 use App\Jobs\ProcessShippingLabelJob;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -43,8 +44,11 @@ class ShippingLabelService
         return $label;
     }
 
-    public function getUserShippingLabels(int $userId, int $perPage = 15, ?string $status = null): LengthAwarePaginator
-    {
+    public function getUserShippingLabels(
+        int $userId,
+        int $perPage = 15,
+        ?string $status = null
+    ): LengthAwarePaginator {
         $result = $this->repository->paginate($perPage, $userId, $status);
 
         $items = collect($result['items']);
@@ -98,6 +102,21 @@ class ShippingLabelService
         }
 
         $this->repository->delete($label);
+    }
+
+    public function getUserStatsByStatus(int $userId): array
+    {
+        $result = $this->repository->getStatsByStatus($userId);
+
+        $stats = [];
+        foreach (ShippingLabelStatus::cases() as $status) {
+            $stats[$status->value] = [
+                'count' => $result[$status->value] ?? 0,
+                'label' => $status->getLabel(),
+            ];
+        }
+
+        return $stats;
     }
 }
 

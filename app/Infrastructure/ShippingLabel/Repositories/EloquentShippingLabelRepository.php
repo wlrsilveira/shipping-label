@@ -103,5 +103,16 @@ class EloquentShippingLabelRepository implements ShippingLabelRepositoryInterfac
 
         return $query->exists();
     }
+
+    public function getStatsByStatus(int $userId): array
+    {
+        $countsByStatus = EloquentShippingLabel::where('user_id', $userId)
+            ->selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+
+        return $countsByStatus;
+    }
 }
 
