@@ -48,7 +48,7 @@ app/
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd api-turno
+cd shipping-label
 ```
 
 2. Install PHP dependencies:
